@@ -40,7 +40,16 @@ Set up the following environment variables:
 ```bash
 LINE_CHANNEL_SECRET=your_line_channel_secret
 LINE_CHANNEL_ACCESS_TOKEN=your_line_channel_access_token
+YAHOO_APP_ID=your_yahoo_app_id
 ```
+
+### Yahoo Weather API
+
+This bot uses Yahoo Weather API to provide weather information. To use this feature:
+
+1. Register for a Yahoo Developer account at [https://developer.yahoo.com/](https://developer.yahoo.com/)
+2. Create a new app to get your Yahoo App ID
+3. Set the `YAHOO_APP_ID` environment variable with your App ID
 
 ### Installation
 
@@ -66,8 +75,37 @@ pip install -r requirements.txt
 
 ```bash
 # Run tests
-python -m pytest
+./run_tests.py
+# または
+python run_tests.py
 
 # Local development
 python lambda_function.py
 ```
+
+## テスト
+
+このプロジェクトには、サービスの機能をテストするためのユニットテストが含まれています。テストは `unittest` フレームワークを使用しています。
+
+### テストの実行方法
+
+```bash
+# すべてのテストを実行
+./run_tests.py
+
+# 特定のテストファイルを実行
+python -m unittest tests/test_weather_service.py
+
+# 特定のテストクラスを実行
+python -m unittest tests.test_weather_service.TestWeatherService
+
+# 特定のテストメソッドを実行
+python -m unittest tests.test_weather_service.TestWeatherService.test_get_weather_success
+```
+
+### テストの構造
+
+- `tests/` - テストディレクトリ
+  - `__init__.py` - Pythonパッケージとしてのテストディレクトリ
+  - `test_weather_service.py` - WeatherServiceのテスト
+  - `test_command_handler.py` - CommandHandlerのテスト（WeatherServiceとの連携を含む）

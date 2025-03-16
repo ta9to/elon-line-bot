@@ -83,7 +83,7 @@ class CommandHandler:
 /quote - イーロン・マスクの名言
 /weather [場所] - 天気情報
 /news - 最新ニュース
-/advice - イーロンからのアドバイス
+/advice [テーマ] - イーロンからのアドバイス
 /task [タスク名] - タスクを実行
 /random - ランダムな返答
         """
@@ -188,7 +188,16 @@ class CommandHandler:
         Returns:
         str: 応答メッセージ
         """
-        advice = self.advice_service.get_advice()
+        parts = text.split()
+        theme = None
+        if len(parts) > 1:
+            theme = ' '.join(parts[1:])
+        
+        if theme:
+            advice = self.advice_service.get_themed_advice(theme)
+        else:
+            advice = self.advice_service.get_advice()
+            
         logger.info(f"advice応答を送信: {advice[:30]}...")
         return advice
     

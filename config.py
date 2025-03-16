@@ -9,6 +9,7 @@ logger.setLevel(logging.INFO)
 LINE_CHANNEL_SECRET = os.environ.get('LINE_CHANNEL_SECRET')
 LINE_CHANNEL_ACCESS_TOKEN = os.environ.get('LINE_CHANNEL_ACCESS_TOKEN')
 YAHOO_APP_ID = os.environ.get('YAHOO_APP_ID')
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 
 # その他の設定
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'

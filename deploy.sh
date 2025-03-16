@@ -22,6 +22,16 @@ pip install line-bot-sdk requests -t .
 # Lambda関数コードをコピー
 echo "Lambda関数コードをコピー中..."
 cp ../lambda_function.py .
+cp ../config.py .
+cp ../line_client.py .
+
+# ディレクトリ構造を作成
+mkdir -p handlers services data
+
+# 各モジュールをコピー
+cp ../handlers/*.py handlers/
+cp ../services/*.py services/
+cp ../data/*.py data/
 
 # ZIPファイルを作成
 echo "ZIPファイルを作成中..."

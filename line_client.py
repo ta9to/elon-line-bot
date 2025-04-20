@@ -10,6 +10,7 @@ class LineClient:
         """LINE APIクライアントを初期化する"""
         self.line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
         self.handler = WebhookHandler(LINE_CHANNEL_SECRET)
+        self._bot_user_id = None
     
     def verify_signature(self, body, signature):
         """
@@ -62,3 +63,9 @@ class LineClient:
         WebhookHandler: LINE WebhookHandler
         """
         return self.handler
+
+    def get_bot_user_id(self) -> str:
+        """Bot 自身の userId を返す（キャッシュ付き）"""
+        if self._bot_user_id is None:
+            self._bot_user_id = self.line_bot_api.get_bot_info().user_id
+        return self._bot_user_id

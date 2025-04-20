@@ -72,9 +72,30 @@ def handle_message(event):
     if text.startswith("/"):
         # グループチャットでもコマンドには常に反応
         command_handler.process_command(event, text)
-    elif not is_in_group:
+        return
+
+    # メンション検知
+    mention = getattr(event.message, "mention", None)
+    logger.info(f"mention: {mention}")
+    mentionees = getattr(mention, "mentionees", []) if mention else []
+    logger.info(f"mentionees: {mentionees}")
+    bot_user_id = line_client.get_bot_user_id()
+    logger.info(f"bot_user_id: {bot_user_id}")
+    is_mentioned = any(
+        (getattr(m, "user_id", None) == bot_user_id)     # ① @bot
+        or (getattr(m, "type", None) == "all")           # ② @all
+        for m in mentionees
+    )
+    logger.info(f"メンション: {is_mentioned}")
+
+    if is_mentioned:
+        # メンションがあれば必ず会話処理
+        conversation_handler.process_conversation(event, text)
+        return
+
+    if not is_in_group:
         # 個人チャットの場合は通常どおり会話に反応
         conversation_handler.process_conversation(event, text)
     else:
-        # グループチャットでコマンド以外は反応しない
-        logger.info("グループチャットでコマンドではないメッセージを無視します")
+        # グループチャットでコマンド・メンション以外は反応しない
+        logger.info("グループチャットでコマンドでもメンションでもないメッセージを無視します")
